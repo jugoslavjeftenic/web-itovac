@@ -1,0 +1,6 @@
+@RDG.api_HostAddress = http://localhost:5231
+
+GET {{RDG.api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
