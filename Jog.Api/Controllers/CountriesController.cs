@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Jog.Api.Filter;
+using Jog.Api.Models;
+using Jog.Api.Models.Repositories;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Jog.Api.Controllers
 {
@@ -11,36 +14,37 @@ namespace Jog.Api.Controllers
 
 	[ApiController]
 	[Route("api/v1/[controller]")]
-	public class CountriesController
+	public class CountriesController : ControllerBase
 	{
 		[HttpPost]
-		public string CreateState()
+		public IActionResult CreateState([FromBody] CountryModel country)
 		{
-			return $"Create a Country.";
+			return Ok($"Create a Country.");
 		}
 
 		[HttpGet]
-		public string ReadAllStates()
+		public IActionResult ReadAllStates()
 		{
-			return $"Read all the countries.";
+			return Ok($"Read all the countries.");
 		}
 
 		[HttpGet("{id}")]
-		public string ReadStateById(int id)
+		[Country_ValidateCountryIDFilter]
+		public IActionResult ReadStateById(int id)
 		{
-			return $"Read Country with id: {id}.";
+			return Ok(CountryRepository.GetCountryById(id));
 		}
 
 		[HttpPut("{id}")]
-		public string UpdateState(int id)
+		public IActionResult UpdateState(int id)
 		{
-			return $"Update Country with id: {id}.";
+			return Ok($"Update Country with id: {id}.");
 		}
 
 		[HttpDelete("{id}")]
-		public string DeleteState(int id)
+		public IActionResult DeleteState(int id)
 		{
-			return $"Delete Country with id: {id}.";
+			return Ok($"Delete Country with id: {id}.");
 		}
 	}
 }
