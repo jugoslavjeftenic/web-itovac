@@ -1,0 +1,6 @@
+@Jog.Api_HostAddress = http://localhost:5143
+
+GET {{Jog.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
