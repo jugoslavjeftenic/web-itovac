@@ -12,5 +12,15 @@ namespace Jog.Api.Models.Repositories
 			new CountryModel(4, "SVN", "Slovenija", ContinentEnum.Evropa),
 			new CountryModel(5, "SRB", "Srbija", ContinentEnum.Evropa)
 		];
+
+		public static bool CountryExist(int id)
+		{
+			return _countries.Any(x => x.CountryID == id);
+		}
+
+		public static CountryModel? GetCountryById(int id)
+		{
+			return _countries.FirstOrDefault(x => x.CountryID == id);
+		}
 	}
 }
