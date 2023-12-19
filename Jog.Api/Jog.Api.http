@@ -1,6 +1,6 @@
 @Jog.Api_HostAddress = http://localhost:5135
 
-GET {{Jog.Api_HostAddress}}/api/v1/jog/
+GET {{Jog.Api_HostAddress}}/api/v1/
 Accept: application/json
 
 ###
