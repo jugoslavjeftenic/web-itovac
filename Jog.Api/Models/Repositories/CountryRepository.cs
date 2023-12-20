@@ -5,17 +5,55 @@ namespace Jog.Api.Models.Repositories
 	public class CountryRepository
 	{
 		private static readonly List<CountryModel> _countries = new() {
-			new CountryModel(1, "BIH", "Bosna i Hercegovina", ContinentEnum.Evropa),
-			new CountryModel(2, "MNE", "Crna Gora", ContinentEnum.Evropa),
-			new CountryModel(3, "HRV", "Hrvatska", ContinentEnum.Evropa),
-			new CountryModel(4, "MKD", "Republika Makedonija", ContinentEnum.Evropa),
-			new CountryModel(5, "SVN", "Slovenija", ContinentEnum.Evropa),
-			new CountryModel(6, "SRB", "Srbija", ContinentEnum.Evropa)
+			new CountryModel{
+				CountryId= 1,
+				Alpha= "BIH",
+				Country= "Bosna i Hercegovina",
+				Continent= ContinentEnum.Evropa
+			},
+			new CountryModel{
+				CountryId= 2,
+				Alpha= "MNE",
+				Country= "Crna Gora",
+				Continent= ContinentEnum.Evropa
+			},
+			new CountryModel{
+				CountryId= 3,
+				Alpha= "HRV",
+				Country= "Hrvatska",
+				Continent= ContinentEnum.Evropa
+			},
+			new CountryModel{
+				CountryId= 4,
+				Alpha= "MKD",
+				Country= "Republika Makedonija",
+				Continent= ContinentEnum.Evropa
+			},
+			new CountryModel{
+				CountryId= 5,
+				Alpha= "SVN",
+				Country= "Slovenija",
+				Continent= ContinentEnum.Evropa
+			},
+			new CountryModel{
+				CountryId = 6,
+				Alpha = "SRB",
+				Country = "Srbija",
+				Continent = ContinentEnum.Evropa
+			}
 		};
 
 		public static bool CountryExist(int id)
 		{
-			return _countries.Any(x => x.CountryID == id);
+			return _countries.Any(x => x.CountryId == id);
+		}
+
+		public static void AddCountry(CountryModel country)
+		{
+			int maxId = _countries.Max(x => x.CountryId);
+			country.CountryId = maxId + 1;
+
+			_countries.Add(country);
 		}
 
 		public static List<CountryModel> GetAllCountries()
@@ -25,7 +63,22 @@ namespace Jog.Api.Models.Repositories
 
 		public static CountryModel? GetCountryById(int id)
 		{
-			return _countries.FirstOrDefault(x => x.CountryID == id);
+			return _countries.FirstOrDefault(x => x.CountryId == id);
+		}
+
+		public static CountryModel? GetCountryByProperties(string? alpha, string? country,
+			ContinentEnum? continent)
+		{
+			return _countries.FirstOrDefault(x =>
+				!string.IsNullOrWhiteSpace(alpha) &&
+				!string.IsNullOrWhiteSpace(x.Alpha) &&
+				x.Alpha.Equals(alpha, StringComparison.OrdinalIgnoreCase) &&
+				!string.IsNullOrWhiteSpace(country) &&
+				!string.IsNullOrWhiteSpace(x.Country) &&
+				x.Country.Equals(country, StringComparison.OrdinalIgnoreCase) &&
+				continent.HasValue &&
+				x.Continent.HasValue &&
+				continent.Value == x.Continent.Value);
 		}
 	}
 }

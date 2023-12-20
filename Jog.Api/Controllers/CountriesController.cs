@@ -15,7 +15,6 @@ namespace Jog.Api.Controllers
 	// Put "/api/v1/countries/{id}"
 	// Delete "/api/v1/countries/{id}"
 
-
 	[ApiController]
 	[Route("api/v1/[controller]")]
 	public class CountriesController : ControllerBase
@@ -24,7 +23,23 @@ namespace Jog.Api.Controllers
 		[HttpPost]
 		public IActionResult CreateCountry([FromBody] CountryModel country)
 		{
-			return Ok($"Create a Country.");
+			if (country == null)
+			{
+				return BadRequest();
+			}
+
+			var existingCountry = CountryRepository.GetCountryByProperties(country.Alpha,
+				country.Country, country.Continent);
+			if (existingCountry != null)
+			{
+				return BadRequest();
+			}
+
+			CountryRepository.AddCountry(country);
+
+			return CreatedAtAction(nameof(GetCountryById),
+				new { id = country.CountryId },
+				country);
 		}
 
 		// Read
