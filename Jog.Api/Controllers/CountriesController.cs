@@ -5,6 +5,10 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Jog.Api.Controllers
 {
+	//POST, GET
+	//https://itovac.bsite.net/api/v1/countries
+	//GET, PUT, DEL
+	//https://itovac.bsite.net/api/v1/countries/1
 	// Post "/api/v1/countries"
 	// Get "/api/v1/countries"
 	// Get "/api/v1/countries/{id}"
@@ -16,33 +20,38 @@ namespace Jog.Api.Controllers
 	[Route("api/v1/[controller]")]
 	public class CountriesController : ControllerBase
 	{
+		// Create
 		[HttpPost]
-		public IActionResult CreateState([FromBody] CountryModel country)
+		public IActionResult CreateCountry([FromBody] CountryModel country)
 		{
 			return Ok($"Create a Country.");
 		}
 
+		// Read
 		[HttpGet]
-		public IActionResult ReadAllStates()
+		public IActionResult GetAllCountries()
 		{
-			return Ok($"Read all the countries.");
+			return Ok(CountryRepository.GetAllCountries());
 		}
 
+		// Read
 		[HttpGet("{id}")]
 		[Country_ValidateCountryIDFilter]
-		public IActionResult ReadStateById(int id)
+		public IActionResult GetCountryById(int id)
 		{
 			return Ok(CountryRepository.GetCountryById(id));
 		}
 
+		// Update
 		[HttpPut("{id}")]
-		public IActionResult UpdateState(int id)
+		public IActionResult UpdateCountry(int id)
 		{
 			return Ok($"Update Country with id: {id}.");
 		}
 
+		// Delete
 		[HttpDelete("{id}")]
-		public IActionResult DeleteState(int id)
+		public IActionResult DeleteCountry(int id)
 		{
 			return Ok($"Delete Country with id: {id}.");
 		}
