@@ -5,11 +5,11 @@
   https://itovac.bsite.net
 
   Endpoints:
-  - POST /api/v1/countries
-  - GET /api/v1/countries
-  - GET /api/v1/countries/{id}
-  - PUT /api/v1/countries/{id}
-  - DELETE /api/v1/countries/{id}
+  - POST https://itovac.bsite.net/api/v1/countries
+  - GET https://itovac.bsite.net/api/v1/countries
+  - GET https://itovac.bsite.net/api/v1/countries/{id}
+  - PUT https://itovac.bsite.net/api/v1/countries/{id}
+  - DELETE https://itovac.bsite.net/api/v1/countries/{id}
 
     {
         "countryId": 6,
