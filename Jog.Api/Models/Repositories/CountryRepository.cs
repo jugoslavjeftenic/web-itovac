@@ -88,5 +88,14 @@ namespace Jog.Api.Models.Repositories
 			countryToUpdate.Country = country.Country;
 			countryToUpdate.Continent = country.Continent;
 		}
+
+		public static void DeleteCountry(int id)
+		{
+			var country = GetCountryById(id);
+			if (country != null)
+			{
+				_countries.Remove(country);
+			}
+		}
 	}
 }

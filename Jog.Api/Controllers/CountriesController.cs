@@ -62,9 +62,13 @@ namespace Jog.Api.Controllers
 
 		// Delete
 		[HttpDelete("{id}")]
+		[Country_ValidateCountryIDFilter]
 		public IActionResult DeleteCountry(int id)
 		{
-			return Ok($"Delete Country with id: {id}.");
+			var country = CountryRepository.GetCountryById(id);
+			CountryRepository.DeleteCountry(id);
+
+			return Ok(country);
 		}
 	}
 }
