@@ -11,7 +11,6 @@ namespace Jog.Api.Filter
 			base.OnActionExecuting(context);
 
 			var countryID = context.ActionArguments["id"] as int?;
-
 			if (countryID.HasValue)
 			{
 				if (countryID.Value <= 0)

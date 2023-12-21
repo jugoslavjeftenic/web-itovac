@@ -80,5 +80,13 @@ namespace Jog.Api.Models.Repositories
 				x.Continent.HasValue &&
 				continent.Value == x.Continent.Value);
 		}
+
+		public static void UpdateCountry(CountryModel country)
+		{
+			var countryToUpdate = _countries.First(x => x.CountryId == country.CountryId);
+			countryToUpdate.Alpha = country.Alpha;
+			countryToUpdate.Country = country.Country;
+			countryToUpdate.Continent = country.Continent;
+		}
 	}
 }

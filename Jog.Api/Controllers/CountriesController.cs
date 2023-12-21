@@ -2,12 +2,11 @@
 using Jog.Api.Models;
 using Jog.Api.Models.Repositories;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace Jog.Api.Controllers
 {
-	//POST, GET
 	//https://itovac.bsite.net/api/v1/countries
-	//GET, PUT, DEL
 	//https://itovac.bsite.net/api/v1/countries/1
 	// Post "/api/v1/countries"
 	// Get "/api/v1/countries"
@@ -21,20 +20,10 @@ namespace Jog.Api.Controllers
 	{
 		// Create
 		[HttpPost]
+		[AllowEmptyJsonBody]
+		[Country_ValidateCreateCountryFilter]
 		public IActionResult CreateCountry([FromBody] CountryModel country)
 		{
-			if (country == null)
-			{
-				return BadRequest();
-			}
-
-			var existingCountry = CountryRepository.GetCountryByProperties(country.Alpha,
-				country.Country, country.Continent);
-			if (existingCountry != null)
-			{
-				return BadRequest();
-			}
-
 			CountryRepository.AddCountry(country);
 
 			return CreatedAtAction(nameof(GetCountryById),
@@ -59,9 +48,26 @@ namespace Jog.Api.Controllers
 
 		// Update
 		[HttpPut("{id}")]
-		public IActionResult UpdateCountry(int id)
+		[AllowEmptyJsonBody]
+		[Country_ValidateCountryIDFilter]
+		[Country_ValidateUpdateCountryFilter]
+		public IActionResult UpdateCountry(int id, CountryModel country)
 		{
-			return Ok($"Update Country with id: {id}.");
+			try
+			{
+				CountryRepository.UpdateCountry(country);
+			}
+			catch (Exception)
+			{
+				if (!CountryRepository.CountryExist(id))
+				{
+					return NotFound();
+				}
+
+				throw;
+			}
+
+			return NoContent();
 		}
 
 		// Delete

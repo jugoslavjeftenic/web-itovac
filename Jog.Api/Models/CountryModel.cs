@@ -7,14 +7,14 @@ namespace Jog.Api.Models
 	{
 		public int CountryId { get; set; }
 
-		[Required]
+		[Required(ErrorMessage = "Nedostaje Alpha kod države od 3 karaktera.")]
 		[StringLength(3, ErrorMessage = "Dužina polja mora biti tačno 3 karaktera.")]
 		public string? Alpha { get; set; }
 
-		[Required]
+		[Required(ErrorMessage = "Nedostaje naziv države.")]
 		public string? Country { get; set; }
 
-		[Required]
+		[Required(ErrorMessage = "Nedostaje kontinent.")]
 		public ContinentEnum? Continent { get; set; }
 	}
 }
