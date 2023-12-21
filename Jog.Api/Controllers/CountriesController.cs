@@ -1,8 +1,9 @@
-﻿using Jog.Api.Filter;
+﻿using Jog.Api.Filters.ActionFilters;
+using Jog.Api.Filters.ExceptionFilters;
+using Jog.Api.Filters.ResourceFilters;
 using Jog.Api.Models;
 using Jog.Api.Models.Repositories;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace Jog.Api.Controllers
 {
@@ -51,21 +52,10 @@ namespace Jog.Api.Controllers
 		[AllowEmptyJsonBody]
 		[Country_ValidateCountryIDFilter]
 		[Country_ValidateUpdateCountryFilter]
+		[Country_HandleUpdateExceptionsFilter]
 		public IActionResult UpdateCountry(int id, CountryModel country)
 		{
-			try
-			{
-				CountryRepository.UpdateCountry(country);
-			}
-			catch (Exception)
-			{
-				if (!CountryRepository.CountryExist(id))
-				{
-					return NotFound();
-				}
-
-				throw;
-			}
+			CountryRepository.UpdateCountry(country);
 
 			return NoContent();
 		}
