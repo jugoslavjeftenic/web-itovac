@@ -5,6 +5,7 @@ namespace Jog.Api.Models
 {
 	public class CountryModel
 	{
+		[Key]
 		public int CountryId { get; set; }
 
 		[Required(ErrorMessage = "Nedostaje Alpha kod države od 3 karaktera.")]

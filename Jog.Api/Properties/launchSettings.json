@@ -26,7 +26,8 @@
       "launchUrl": "api/v1",
       "applicationUrl": "https://localhost:7030;http://localhost:5135",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Production"
+        //"ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
     "IIS Express": {
