@@ -5,6 +5,7 @@
 
 # Custom folders and files
 _course/
+appsettings.Production.json
 
 # User-specific files
 *.rsuser
