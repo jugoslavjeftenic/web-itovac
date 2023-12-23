@@ -1,4 +1,5 @@
-﻿using Jog.Api.Filters.ActionFilters;
+﻿using Jog.Api.Data;
+using Jog.Api.Filters.ActionFilters;
 using Jog.Api.Filters.ExceptionFilters;
 using Jog.Api.Filters.ResourceFilters;
 using Jog.Api.Models;
@@ -19,13 +20,21 @@ namespace Jog.Api.Controllers
 	[Route("api/v1/[controller]")]
 	public class CountriesController : ControllerBase
 	{
+		private readonly ApplicationDbContext _db;
+
+		public CountriesController(ApplicationDbContext db)
+		{
+			_db = db;
+		}
+
 		// Create
 		[HttpPost]
 		[AllowEmptyJsonBody]
-		[Country_ValidateCreateCountryFilter]
+		[TypeFilter(typeof(Country_ValidateCreateCountryFilterAttribute))]
 		public IActionResult CreateCountry([FromBody] CountryModel country)
 		{
-			CountryRepository.AddCountry(country);
+			_db.Countries.Add(country);
+			_db.SaveChanges();
 
 			return CreatedAtAction(nameof(GetCountryById),
 				new { id = country.CountryId },
@@ -36,39 +45,46 @@ namespace Jog.Api.Controllers
 		[HttpGet]
 		public IActionResult GetAllCountries()
 		{
-			return Ok(CountryRepository.GetAllCountries());
+			return Ok(_db.Countries.ToList());
 		}
 
 		// Read
 		[HttpGet("{id}")]
-		[Country_ValidateCountryIDFilter]
+		[TypeFilter(typeof(Country_ValidateCountryIdFilterAttribute))]
 		public IActionResult GetCountryById(int id)
 		{
-			return Ok(CountryRepository.GetCountryById(id));
+			return Ok(HttpContext.Items["country"]);
 		}
 
 		// Update
 		[HttpPut("{id}")]
 		[AllowEmptyJsonBody]
-		[Country_ValidateCountryIDFilter]
+		[TypeFilter(typeof(Country_ValidateCountryIdFilterAttribute))]
 		[Country_ValidateUpdateCountryFilter]
-		[Country_HandleUpdateExceptionsFilter]
+		[TypeFilter(typeof(Country_HandleUpdateExceptionsFilterAttribute))]
 		public IActionResult UpdateCountry(int id, CountryModel country)
 		{
-			CountryRepository.UpdateCountry(country);
+			var countryToUpdate = HttpContext.Items["country"] as CountryModel;
+			countryToUpdate!.Alpha = country.Alpha;
+			countryToUpdate.Country = country.Country;
+			countryToUpdate.Continent = country.Continent;
+
+			_db.SaveChanges();
 
 			return NoContent();
 		}
 
 		// Delete
 		[HttpDelete("{id}")]
-		[Country_ValidateCountryIDFilter]
+		[TypeFilter(typeof(Country_ValidateCountryIdFilterAttribute))]
 		public IActionResult DeleteCountry(int id)
 		{
-			var country = CountryRepository.GetCountryById(id);
-			CountryRepository.DeleteCountry(id);
+			var countryToDelete = HttpContext.Items["country"] as CountryModel;
+			
+			_db.Countries.Remove(countryToDelete!);
+			_db.SaveChanges();
 
-			return Ok(country);
+			return Ok(countryToDelete);
 		}
 	}
 }
